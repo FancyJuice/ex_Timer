@@ -353,8 +353,7 @@ class RecDialog2(wx.Dialog):
         self.pic_frame = None  # 用于存储图片窗口的引用
 
     def on_pic_button(self, event):
-        if self.pic_frame is not None and self.pic_frame.IsShown():
-            # 如果图片窗口已经打开并且可见，则关闭它
+        if self.pic_frame is not None:
             self.pic_frame.Close()
             self.pic_frame = None  # 重置图片窗口引用
         else:
@@ -375,8 +374,12 @@ class RecDialog2(wx.Dialog):
 
             # 设置窗口位置
             self.pic_frame.SetPosition((x, y))
+            self.pic_frame.Bind(wx.EVT_CLOSE, self.on_pic_frame_close)
             self.pic_frame.Show()
 
+    def on_pic_frame_close(self, event):
+        self.pic_frame = None
+        event.Skip()  # 确保默认的关闭行为仍然发生
 
 class DayDialog(wx.Dialog):
     """添加日常记录对话框"""
